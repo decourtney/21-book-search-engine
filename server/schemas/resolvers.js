@@ -8,12 +8,12 @@ const resolvers = {
       if (context.user) {
         return await User.findOne({
           $or: [
-            { _id: args.user ? args.user.id : args.params.id },
-            { username: args.params.username },
+            { _id: context.user ? context.user.id : args.id },
+            { username: args.username },
           ],
         });
       }
-      throw new AuthenticationError("No user found with this email address");
+      throw new AuthenticationError("Cannot find a user with this id!");
     },
   },
 
@@ -27,13 +27,13 @@ const resolvers = {
       const user = await User.findOne(args.email);
 
       if (!user) {
-        throw new AuthenticationError("No user found with this email address");
+        throw new AuthenticationError("Can't find this user");
       }
 
       const correctPw = await user.isCorrectPassword(args.password);
 
       if (!correctPw) {
-        throw new AuthenticationError("Incorrect credentials");
+        throw new AuthenticationError("Wrong password!");
       }
 
       const token = signToken(user);
@@ -60,6 +60,7 @@ const resolvers = {
           { new: true }
         );
       }
+      throw new AuthenticationError("You need to be logged in!");
     },
   },
 };
