@@ -18,20 +18,19 @@ const resolvers = {
   },
 
   Mutation: {
-    addUser: async (parent, args) => {
-      const user = await User.create(args);
+    addUser: async (parent, {username, email, password}) => {
+      const user = await User.create(username, email, password);
       const token = signToken(user);
       return { token, user };
     },
-    login: async (parent, args) => {
-      console.log(args)
-      const user = await User.findOne(args);
+    login: async (parent, {email, password}) => {
+      const user = await User.findOne(email);
 
       if (!user) {
         throw new AuthenticationError("Can't find this user");
       }
 
-      const correctPw = await user.isCorrectPassword(args.password);
+      const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
         throw new AuthenticationError("Wrong password!");
