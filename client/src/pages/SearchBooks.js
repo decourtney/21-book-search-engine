@@ -15,7 +15,7 @@ const SearchBooks = () => {
   const [searchInput, setSearchInput] = useState("");
 
   // saveBook mutation hook
-  const [saveBook, { error, data }] = useMutation(SAVE_BOOK);
+  const [saveBook, { error }] = useMutation(SAVE_BOOK);
 
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
@@ -72,7 +72,7 @@ const SearchBooks = () => {
 
     try {
       const { data } = await saveBook({
-        variables: { book: { ...bookToSave } },
+        variables: { book: bookToSave  },
       });
 
       // if book successfully saves to user's account, save book id to state
