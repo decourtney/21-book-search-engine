@@ -4,15 +4,13 @@ const { signToken } = require("../utils/auth");
 
 const resolvers = {
   Query: {
+    user: async (parent, { username }) => {
+      return User.findOne({ username });
+    },
     me: async (parent, args, context) => {
-      console.log("Query me: " + args);
+      console.log("Query me: " + context);
       if (context.user) {
-        return await User.findOne({
-          $or: [
-            { _id: context.user ? context.user.id : args.id },
-            { username: args.username },
-          ],
-        });
+        return await User.findOne({ _id: context.user._id });
       }
       throw new AuthenticationError("Cannot find a user with this id!");
     },
@@ -37,18 +35,17 @@ const resolvers = {
       if (!correctPw) {
         throw new AuthenticationError("Wrong password!");
       }
-      console.log(user);
+
       const token = signToken(user);
 
       return { token, user };
     },
 
-    saveBook: async (parent, {book}, context) => {
-      console.log("saveBook() called");
+    saveBook: async (parent, { book }, context) => {
       if (context.user) {
         return (updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $addToSet: { savedBooks: book.bookId } },
+          { $addToSet: { savedBooks: book } },
           { new: true, runValidators: true }
         ));
       }
