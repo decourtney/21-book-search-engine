@@ -11,6 +11,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SearchBooks from './pages/SearchBooks';
 import SavedBooks from './pages/SavedBooks';
 import Navbar from './components/Navbar';
+import mergeBooks from './utils/mergeFunctions';
 
 // Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
@@ -30,10 +31,13 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+
+
 const client = new ApolloClient({
   // Set up our client to execute the `authLink` middleware prior to making the request to our GraphQL API
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
+  // cache: mergeBooks.cache, // Trying to squash the browser console warning about the memory cache.
 });
 
 function App()

@@ -8,7 +8,6 @@ const resolvers = {
       return User.findOne({ username });
     },
     me: async (parent, args, context) => {
-      console.log("Query me: " + context);
       if (context.user) {
         return await User.findOne({ _id: context.user._id });
       }
@@ -52,11 +51,11 @@ const resolvers = {
       throw new AuthenticationError("You need to be logged in!");
     },
 
-    removeBook: async (parent, args, context) => {
+    removeBook: async (parent, { bookId }, context) => {
       if (context.user) {
         return (updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $pull: { savedBooks: { bookId: args.bookId } } },
+          { $pull: { savedBooks: { bookId: bookId } } },
           { new: true }
         ));
       }
