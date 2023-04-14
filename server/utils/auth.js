@@ -18,7 +18,7 @@ module.exports = {
     if (!token) {
       return req; // res.status(400).json({ message: 'You have no token!' }); // OMFG! All effin day... from 8am till 11pm. This one line wasted the whole effin day!!
     }
-
+    
     // verify token and get user data out of it
     try {
       const { data } = jwt.verify(token, secret, { maxAge: expiration });
@@ -28,11 +28,10 @@ module.exports = {
     }
 
     // send to next endpoint
-    next();
+    return req;
   },
   signToken: function ({ username, email, _id }) {
     const payload = { username, email, _id };
-
     return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
   },
 };
