@@ -22,7 +22,7 @@ The application is deployed on Heroku with a MongoDB database using MongoDB Atla
 
 Overall, this project showcases the importance of data and user demands in modern web development, and how refactoring to a GraphQL API can improve performance and scalability.
 
-Deployed Project: **not deployed**
+Deployed Project: https://floating-caverns-38393.herokuapp.com/
    
 <img src="./assets/booksearch_ss.png" target="_blank" alt="Book Search" style="max-width: 384px; display: block;" /><br>
 <img src="./assets/mern-stack.png" target="_blank" alt="MERN Logo" style="max-width: 384px; display: block;" /><br>
